@@ -26,6 +26,14 @@ Not available in repository
 
 ## Setup Guide
 
+### Backend Setup
+
+_From `README.md`:_
+
+
+Not available in repository
+
+
 ### Frontend Setup
 
 ```bash
@@ -56,70 +64,87 @@ High-level system design, data flows, API map, and workflow pipelines derived fr
 ```mermaid
 graph TB
     subgraph Client["Client Layer"]
-        user["User / Operator"]
-        api_client["API / CLI Client"]
+        user["User"]
+        browser["Browser / Client"]
     end
 
-    subgraph Core["app/ — Application Core"]
+    subgraph Core["Voiceit2 — Web App"]
+        events["Events<br/>/events"]
+        page_tsx["Page.Tsx<br/>/page.tsx"]
+        podcasts["Podcasts<br/>/podcasts"]
+        recruitment["Recruitment<br/>/recruitment"]
+        JoinClubPage["JoinClubPage<br/>Component"]
+        TiltedCard["TiltedCard<br/>Component"]
     end
 
     subgraph Data["Data & Artifacts"]
-        datasets["Datasets · JSON · CSV"]
+        assets["Static assets · public/"]
+        config["Config · env / JSON"]
     end
 
-    subgraph Charts["Metrics & Dashboard Charts"]
-        page_views["Page views chart"]
-        nav_sections["Navigation sections map"]
-        project_showcase["Project showcase grid"]
-        skills_timeline["Skills & experience timeline"]
-        contact_funnel["Contact conversion funnel"]
-        media_gallery["Media & assets gallery"]
+    subgraph Charts["VoiceIT2 — Metrics & Views"]
+        events["Events page"]
+        page_tsx["Page.Tsx page"]
+        podcasts["Podcasts page"]
+        recruitment["Recruitment page"]
+        components["components/ module"]
+        config["config/ module"]
     end
 
-    user --> api_client
-    api_client --> Core
-    user -->|Web UI| dashboard_kpis
-    Core --> page_views
-    page_views --> user
+    user --> browser
+    browser --> events
+    events --> user
 ```
 
 ### Data Flow & Charts Pipeline
 
 ```mermaid
 flowchart LR
-    U["User / Event"] --> IN["Untrusted Input"]
+    U["User / Event"] --> IN["User Action"]
 
-    subgraph Pipeline["Processing Pipeline"]
-        p0["Input"]
-        p1["Processing"]
-        p2["Output"]
+    subgraph Pipeline["VoiceIT2 App Flow"]
+        p0["Events"]
+        p1["Page.Tsx"]
+        p2["Podcasts"]
+        p3["Recruitment"]
+        p4["Joinclubpage"]
+        p5["Tiltedcard"]
         p0 --> p1
         p1 --> p2
+        p2 --> p3
+        p3 --> p4
+        p4 --> p5
     end
 
-    subgraph Metrics["Metrics & Chart Feeds"]
-        page_views["Page views chart"]
-        nav_sections["Navigation sections map"]
-        project_showcase["Project showcase grid"]
-        skills_timeline["Skills & experience timeline"]
-        contact_funnel["Contact conversion funnel"]
-        media_gallery["Media & assets gallery"]
+    subgraph Metrics["VoiceIT2 — Views & Metrics"]
+        events["Events page"]
+        page_tsx["Page.Tsx page"]
+        podcasts["Podcasts page"]
+        recruitment["Recruitment page"]
+        components["components/ module"]
+        config["config/ module"]
     end
 
     IN --> p0
-    p2 --> OUT["Authorized Output"]
+    p5 --> OUT["UI Response"]
     OUT --> U
-    p2 --> page_views
-    page_views --> U
+    p5 --> events
+    events --> U
 ```
 
 ### Component & API Map
 
 ```mermaid
 graph LR
-    subgraph App["app Components"]
-        main["main<br/>Main"]
+    subgraph App["VoiceIT2 Components"]
+        events["Events<br/>/events"]
+        page_tsx["Page.Tsx<br/>/page.tsx"]
+        podcasts["Podcasts<br/>/podcasts"]
+        recruitment["Recruitment<br/>/recruitment"]
     end
+    events --> page_tsx
+    page_tsx --> podcasts
+    podcasts --> recruitment
 ```
 
 ### Application Page Map
@@ -148,7 +173,7 @@ Screenshots captured from the running application. Each page is listed with its 
 
 Application page at `/`
 
-![Background Music](docs/readme-agent/pages/dashboard.png)
+![Background Music](docs/readme-agent/pages/home.png)
 
 #### Events
 
